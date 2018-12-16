@@ -1,12 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { Transition } from 'react-spring';
+import { Transition, animated, config } from 'react-spring';
 import track from 'common/utils/analytics';
 
 import Relative from 'common/components/Relative';
-
-const Empty = () => <span />;
 
 class OverlayComponent extends React.Component {
   state = {
@@ -72,12 +70,31 @@ class OverlayComponent extends React.Component {
       <Relative onMouseDown={e => e.preventDefault()}>
         {children(this.open)}
         <Transition
-          from={{ height: 0, opacity: 0 }}
+          items={isOpen}
+          from={{
+            height: 0,
+            opacity: 1,
+            position: 'absolute',
+            top: 'calc(100% + 1rem)',
+            right: 0,
+            zIndex: 10,
+            overflow: 'hidden',
+            boxShadow: '0 3px 3px rgba(0, 0, 0, 0.3)',
+          }}
           enter={{ height: 'auto', opacity: 1 }}
           leave={{ height: 0, opacity: 0 }}
+          native
+          config={config.fast}
         >
-          {/* TODO: Fix this */}
-          {isOpen ? Overlay : Empty}
+          {open =>
+            open
+              ? style => (
+                  <animated.div style={style}>
+                    <Overlay />
+                  </animated.div>
+                )
+              : style => <animated.span style={style} />
+          }
         </Transition>
       </Relative>
     );
