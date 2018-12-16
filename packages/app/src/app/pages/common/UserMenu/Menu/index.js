@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import UserIcon from 'react-icons/lib/ti/user';
 import ExitIcon from 'react-icons/lib/md/exit-to-app';
@@ -8,7 +7,7 @@ import SettingsIcon from 'react-icons/lib/md/settings';
 import { profileUrl, patronUrl, curatorUrl } from 'common/utils/url-generator';
 import PatronBadge from 'common/utils/badges/PatronBadge';
 
-import { Container, Item, Icon } from './elements';
+import { Container, Item, Icon, Anchor } from './elements';
 
 function Menu({
   username,
@@ -19,14 +18,14 @@ function Menu({
 }) {
   return (
     <Container>
-      <Link style={{ textDecoration: 'none' }} to={profileUrl(username)}>
+      <Anchor to={profileUrl(username)}>
         <Item>
           <Icon>
             <UserIcon />
           </Icon>
           My Profile
         </Item>
-      </Link>
+      </Anchor>
       <Item onClick={openStorageManagement}>
         <Icon>
           <FolderIcon />
@@ -40,25 +39,35 @@ function Menu({
         Preferences
       </Item>
       {curator && (
-        <Link style={{ textDecoration: 'none' }} to={curatorUrl()}>
+        <Anchor to={curatorUrl()}>
           <Item>
-            <Icon style={{ marginRight: 7 }}>
+            <Icon
+              css={`
+                margin-right: 7px;
+              `}
+            >
               <span role="img" aria-label="Star">
                 ✨
               </span>
             </Icon>
             Curator Page
           </Item>
-        </Link>
+        </Anchor>
       )}
-      <Link style={{ textDecoration: 'none' }} to={patronUrl()}>
+      <Anchor to={patronUrl()}>
         <Item>
           <Icon>
-            <PatronBadge style={{ width: 24, margin: '-6px -5px' }} size={24} />
+            <PatronBadge
+              css={`
+                width: 24px;
+                margin: -6px -5px;
+              `}
+              size={24}
+            />
           </Icon>
           Patron Page
         </Item>
-      </Link>
+      </Anchor>
 
       <Item onClick={signOut}>
         <Icon>

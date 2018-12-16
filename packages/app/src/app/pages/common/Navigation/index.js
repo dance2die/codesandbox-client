@@ -48,7 +48,12 @@ function Navigation({ signals, store, title, searchNoInput }) {
               {matches =>
                 matches || searchNoInput ? (
                   <Tooltip position="bottom" title="Search All Sandboxes">
-                    <Link style={{ color: 'white' }} to={searchUrl()}>
+                    <Link
+                      css={`
+                        color: white;
+                      `}
+                      to={searchUrl()}
+                    >
                       <SearchIcon height={35} />
                     </Link>
                   </Tooltip>
@@ -60,7 +65,12 @@ function Navigation({ signals, store, title, searchNoInput }) {
           </Action>
           <Action>
             <Tooltip position="bottom" title="Documentation">
-              <a style={{ color: 'white' }} href="/docs">
+              <a
+                css={`
+                  color: white;
+                `}
+                href="/docs"
+              >
                 <BookIcon height={35} />
               </a>
             </Tooltip>
@@ -76,7 +86,9 @@ function Navigation({ signals, store, title, searchNoInput }) {
           )}
 
           <Action
-            style={{ fontSize: '1.125rem' }}
+            css={`
+              font-size: 1.125rem;
+            `}
             onClick={() =>
               signals.modalOpened({
                 modal: 'newSandbox',
@@ -89,9 +101,18 @@ function Navigation({ signals, store, title, searchNoInput }) {
           </Action>
 
           {user && (
-            <Action style={{ fontSize: '1.125rem' }}>
+            <Action
+              css={`
+                font-size: 1.125rem;
+              `}
+            >
               <Tooltip position="bottom" title="Dashboard">
-                <Link style={{ color: 'white' }} to={dashboardUrl()}>
+                <Link
+                  css={`
+                    color: white;
+                  `}
+                  to={dashboardUrl()}
+                >
                   <InfoIcon height={35} />
                 </Link>
               </Tooltip>
@@ -108,7 +129,10 @@ function Navigation({ signals, store, title, searchNoInput }) {
             >
               {open => (
                 <Action
-                  style={{ position: 'relative', fontSize: '1.25rem' }}
+                  css={`
+                    position: relative;
+                    font-size: 1.25rem;
+                  `}
                   onClick={open}
                 >
                   <BellIcon height={35} />
