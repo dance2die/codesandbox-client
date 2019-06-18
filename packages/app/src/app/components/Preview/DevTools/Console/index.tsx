@@ -199,7 +199,6 @@ class Console extends React.Component<StyledProps> {
     }
 
     const { isEnabled } = this.state;
-
     const messages = [
       {
         method: 'log',
@@ -218,13 +217,18 @@ class Console extends React.Component<StyledProps> {
       this.props.updateStatus('clear');
     }
 
+    const { isEnabled } = this.state;
+    const consoleMessage = isEnabled
+      ? '%cConsole was cleared'
+      : `%cConsole is ${isEnabled ? 'enabled' : 'disabled'}`;
+
     const messages = nothing
       ? []
       : [
           {
             method: 'log',
             data: [
-              '%cConsole was cleared',
+              consoleMessage,
               'font-style: italic; color: rgba(255, 255, 255, 0.3)',
             ],
           },
