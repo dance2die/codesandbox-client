@@ -6,7 +6,8 @@ import update from 'immutability-helper';
 import styled from 'styled-components';
 
 import ClearIcon from 'react-icons/lib/md/block';
-import PowerIcon from 'react-icons/lib/md/power-settings-new';
+import PowerIsOnIcon from 'react-icons/lib/md/power-settings-new';
+import PowerIsOffIcon from 'react-icons/lib/md/settings-power';
 import { Decode, Console as ConsoleFeed } from 'console-feed';
 
 import Select from '@codesandbox/common/lib/components/Select';
@@ -30,7 +31,10 @@ const iconFontSize = `font-size: 0.8em`;
 const StyledClearIcon = styled(ClearIcon)`
   ${iconFontSize}
 `;
-const StyledPowerIcon = styled(PowerIcon)`
+const StyledPowerIsOnIcon = styled(PowerIsOnIcon)`
+  ${iconFontSize}
+`;
+const StyledPowerIsOffIcon = styled(PowerIsOffIcon)`
   ${iconFontSize}
 `;
 
@@ -41,6 +45,7 @@ class Console extends React.Component<StyledProps> {
     initialClear: true,
     filter: [],
     searchKeywords: '',
+    isEnabled: true,
   };
 
   listener;
@@ -76,9 +81,21 @@ class Console extends React.Component<StyledProps> {
             break;
           }
           default: {
-            this.addMessage(method, args);
+            if (this.state.isEnabled) {
+              this.addMessage(method, args);
+            }
             break;
           }
+        }
+        break;
+      }
+      case 'toggle-console': {
+        if (this.state.initialClear) {
+          this.setState({
+            initialClear: false,
+          });
+        } else {
+          this.toggleConsole();
         }
         break;
       }
@@ -175,6 +192,26 @@ class Console extends React.Component<StyledProps> {
       this.clearConsole(true);
     }
   }
+
+  toggleConsole = () => {
+    if (this.props.updateStatus) {
+      this.props.updateStatus('info');
+    }
+
+    const { isEnabled } = this.state;
+
+    const messages = [
+      {
+        method: 'log',
+        data: [
+          `%cConsole is ${!isEnabled ? 'enabled' : 'disabled'}`,
+          'font-style: italic; color: rgba(255, 255, 255, 0.3)',
+        ],
+      },
+    ];
+
+    this.setState({ isEnabled: !isEnabled, messages });
+  };
 
   clearConsole = (nothing?: boolean) => {
     if (this.props.updateStatus) {
@@ -289,11 +326,11 @@ export default {
   Content: withTheme<StyledProps>(Console),
   actions: [
     {
-      title: 'Disable Console',
+      title: 'Toggle Console',
       onClick: () => {
-        dispatch({ type: 'clear-console' });
+        dispatch({ type: 'toggle-console' });
       },
-      Icon: StyledPowerIcon,
+      Icon: StyledPowerIsOnIcon,
     },
     {
       title: 'Clear Console',
